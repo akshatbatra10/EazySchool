@@ -1,10 +1,12 @@
 package com.project.eazy_school.config;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,7 +19,8 @@ public class ProjectSecurityConfig {
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.ignoringRequestMatchers("/saveMsg")).authorizeHttpRequests((requests) -> requests
+        http.csrf(csrf -> csrf.ignoringRequestMatchers("/saveMsg")
+                .ignoringRequestMatchers(PathRequest.toH2Console())).authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/dashboard").permitAll()
                 .requestMatchers("/", "/home").permitAll()
                 .requestMatchers("/contact").permitAll()
@@ -28,6 +31,7 @@ public class ProjectSecurityConfig {
                 .requestMatchers("/assets/**").permitAll()
                 .requestMatchers("/login").permitAll()
                 .requestMatchers("/logout").permitAll()
+                .requestMatchers(PathRequest.toH2Console()).permitAll()
                 .anyRequest().authenticated());
         http.formLogin(form -> form
                 .loginPage("/login")
@@ -38,6 +42,7 @@ public class ProjectSecurityConfig {
                 .logoutSuccessUrl("/login?logout=true")
                 .invalidateHttpSession(true)
                 .permitAll());
+        http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
         http.httpBasic(Customizer.withDefaults());
         return (SecurityFilterChain) http.build();
     }
