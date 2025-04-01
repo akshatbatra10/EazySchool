@@ -1,14 +1,21 @@
 package com.project.eazy_school.model;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.GenericGenerator;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Entity
+@Table(name = "contact_msg")
 public class Contact extends BaseEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "contact_id")
     private int contactId;
 
     @NotBlank(message = "Name cannot be blank")
