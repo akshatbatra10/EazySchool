@@ -65,4 +65,4 @@ CREATE TABLE IF NOT EXISTS `person` (
     PRIMARY KEY (`person_id`),
     FOREIGN KEY (role_id) REFERENCES roles(role_id),
     FOREIGN KEY (address_id) REFERENCES address(address_id),
-)
+);

@@ -22,6 +22,8 @@ public class ProjectSecurityConfig {
                 .ignoringRequestMatchers("/public/**"))
                 .authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/dashboard").authenticated()
+                .requestMatchers("/displayProfile").authenticated()
+                .requestMatchers("/updateProfile").authenticated()
                 .requestMatchers("/displayMessages").hasRole("ADMIN")
                 .requestMatchers("/closeMsg/**").hasRole("ADMIN")
                 .requestMatchers("/", "/home").permitAll()
@@ -46,23 +48,6 @@ public class ProjectSecurityConfig {
                 .permitAll());
         http.httpBasic(Customizer.withDefaults());
         return (SecurityFilterChain) http.build();
-    }
-
-    @Bean
-    public InMemoryUserDetailsManager userDetailsService() {
-        UserDetails user = User.builder()
-                .username("user")
-                .password(passwordEncoder().encode("user"))
-                .roles("USER")
-                .build();
-
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password(passwordEncoder().encode("admin"))
-                .roles("ADMIN")
-                .build();
-
-        return new InMemoryUserDetailsManager(admin, user);
     }
 
     @Bean

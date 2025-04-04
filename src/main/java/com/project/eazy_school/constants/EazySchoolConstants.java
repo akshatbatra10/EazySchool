@@ -1,4 +1,4 @@
-package com.project.eazy_school.model;
+package com.project.eazy_school.constants;
 
 public class EazySchoolConstants {
 

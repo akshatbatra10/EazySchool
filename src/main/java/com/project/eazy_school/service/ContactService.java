@@ -1,7 +1,7 @@
 package com.project.eazy_school.service;
 
 import com.project.eazy_school.model.Contact;
-import com.project.eazy_school.model.EazySchoolConstants;
+import com.project.eazy_school.constants.EazySchoolConstants;
 import com.project.eazy_school.repository.ContactRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
