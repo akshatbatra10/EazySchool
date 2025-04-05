@@ -44,11 +44,11 @@ CREATE TABLE IF NOT EXISTS `address` (
     `state` varchar(50) NOT NULL,
     `zip_code` int NOT NULL,
     `created_at` TIMESTAMP NOT NULL,
-    `created_by` TIMESTAMP NOT NULL,
+    `created_by` varchar(50) NOT NULL,
     `updated_at` TIMESTAMP DEFAULT NULL,
     `updated_by` varchar(50) DEFAULT NULL,
     PRIMARY KEY (`address_id`)
-    );
+);
 
 CREATE TABLE IF NOT EXISTS `person` (
     `person_id` int NOT NULL AUTO_INCREMENT,
@@ -66,3 +66,18 @@ CREATE TABLE IF NOT EXISTS `person` (
     FOREIGN KEY (role_id) REFERENCES roles(role_id),
     FOREIGN KEY (address_id) REFERENCES address(address_id),
 );
+
+CREATE TABLE IF NOT EXISTS `class` (
+    `class_id` int NOT NULL AUTO_INCREMENT,
+    `name` varchar(100) NOT NULL,
+    `created_at` TIMESTAMP NOT NULL,
+    `created_by` varchar(50) NOT NULL,
+    `updated_at` TIMESTAMP DEFAULT NULL,
+    `updated_by` varchar(50) DEFAULT NULL,
+    PRIMARY KEY (`class_id`)
+    );
+
+ALTER TABLE `person`
+ADD COLUMN `class_id` int NULL AFTER `address_id`,
+ADD CONSTRAINT `FK_CLASS_CLASS_ID` FOREIGN KEY (`class_id`)
+REFERENCES `class`(`class_id`);
