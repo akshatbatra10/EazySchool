@@ -12,8 +12,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing(auditorAwareRef = "auditAwareImpl")
 public class EazySchoolApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(EazySchoolApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(EazySchoolApplication.class, args);
+    }
 
 }

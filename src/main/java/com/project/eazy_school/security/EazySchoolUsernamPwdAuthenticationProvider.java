@@ -20,11 +20,16 @@ import java.util.List;
 @Component
 public class EazySchoolUsernamPwdAuthenticationProvider implements AuthenticationProvider {
 
-    @Autowired
-    private PersonRepository personRepository;
+    private final PersonRepository personRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    public EazySchoolUsernamPwdAuthenticationProvider(PersonRepository personRepository, PasswordEncoder passwordEncoder) {
+        super();
+        this.personRepository = personRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -40,10 +45,11 @@ public class EazySchoolUsernamPwdAuthenticationProvider implements Authenticatio
 
     private List<GrantedAuthority> getGrantedAuthorities(Roles roles) {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_"+roles.getRoleName()));
+        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + roles.getRoleName()));
         return grantedAuthorities;
     }
 
+    // This tells Spring Security that this provider supports username/password login.
     @Override
     public boolean supports(Class<?> authentication) {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);

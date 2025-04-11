@@ -14,26 +14,28 @@ import java.util.Optional;
 @Service
 public class ContactService {
 
-    @Autowired
-    private ContactRepository contactRepository;
+    private final ContactRepository contactRepository;
 
-    public boolean saveMessageDetails(Contact contact) {
+    @Autowired
+    public ContactService(ContactRepository contactRepository) {
+        this.contactRepository = contactRepository;
+    }
+
+    public void saveMessageDetails(Contact contact) {
         contact.setStatus(EazySchoolConstants.OPEN);
         Contact savedContact = contactRepository.save(contact);
-        return savedContact.getContactId() > 0;
     }
 
     public List<Contact> findMsgsWithOpenStatus() {
-        List<Contact> contactMsgs = contactRepository.findByStatus(EazySchoolConstants.OPEN);
-        return contactMsgs;
+        return contactRepository.findByStatus(EazySchoolConstants.OPEN);
     }
 
-    public boolean updateMsgStatus(int contactId) {
+    // Use Optional when data can be null
+    public void updateMsgStatus(int contactId) {
         Optional<Contact> contact = contactRepository.findById(contactId);
         contact.ifPresent((contact1 -> {
             contact1.setStatus(EazySchoolConstants.CLOSE);
+            contactRepository.save(contact.get());
         }));
-        Contact updatedContact = contactRepository.save(contact.get());
-        return updatedContact.getUpdatedBy() != null;
     }
 }

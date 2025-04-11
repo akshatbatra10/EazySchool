@@ -97,6 +97,6 @@ CREATE TABLE IF NOT EXISTS `person_courses` (
     `person_id` int NOT NULL,
     `course_id` int NOT NULL,
     FOREIGN KEY (person_id) REFERENCES person(person_id),
-    FOREIGN KEY (person_id) REFERENCES courses(course_id),
+    FOREIGN KEY (course_id) REFERENCES courses(course_id),
     PRIMARY KEY (`person_id`, `course_id`)
 );

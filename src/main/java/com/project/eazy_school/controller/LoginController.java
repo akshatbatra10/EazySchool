@@ -30,10 +30,13 @@ public class LoginController {
             errorMessage = "Your registration was successful. Login in with registered credentials!";
         }
         model.addAttribute("errorMessage", errorMessage);
-//        throw new RuntimeException("Not able to login");
         return "login.html";
     }
 
+    /*
+    SecurityContextHolder -> holds security info for the current session
+    SecurityContextLogoutHandler -> clears authentication, invalidates session and delete cookies
+     */
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

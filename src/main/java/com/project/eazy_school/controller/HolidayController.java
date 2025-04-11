@@ -17,8 +17,12 @@ import java.util.stream.StreamSupport;
 @Controller
 public class HolidayController {
 
+    private final HolidaysRepository holidaysRepository;
+
     @Autowired
-    private HolidaysRepository holidaysRepository;
+    public HolidayController(HolidaysRepository holidaysRepository) {
+        this.holidaysRepository = holidaysRepository;
+    }
 
     @GetMapping("/holidays/{display}")
     public String displayHolidays(@PathVariable String display, Model model) {

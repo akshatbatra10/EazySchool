@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class DashboardController {
 
+    private final PersonRepository personRepository;
+
     @Autowired
-    private PersonRepository personRepository;
+    public DashboardController(PersonRepository personRepository) {
+        this.personRepository = personRepository;
+    }
 
     @RequestMapping(value = "/dashboard")
     public String displayDashboard(Model model, Authentication authentication, HttpSession session) {
@@ -25,7 +29,7 @@ public class DashboardController {
         if (person.getEazyClass() != null && person.getEazyClass().getName() != null) {
             model.addAttribute("enrolledClass", person.getEazyClass().getName());
         }
-        session.setAttribute("loggedInPerson", person);
+        session.setAttribute("loggedInPerson", person); // adding person in session for using in other controllers
         return "dashboard.html";
     }
 }

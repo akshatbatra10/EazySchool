@@ -21,9 +21,9 @@ import java.util.List;
 @Controller
 public class ContactController {
 
-    @Autowired
     private final ContactService contactService;
 
+    @Autowired
     public ContactController(ContactService contactService) {
         this.contactService = contactService;
     }

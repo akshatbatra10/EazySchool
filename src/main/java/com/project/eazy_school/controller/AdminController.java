@@ -22,14 +22,18 @@ import java.util.Optional;
 @RequestMapping("admin")
 public class AdminController {
 
-    @Autowired
-    EazyClassRepository eazyClassRepository;
+    private final EazyClassRepository eazyClassRepository;
+
+    private final PersonRepository personRepository;
+
+    private final CoursesRepository coursesRepository;
 
     @Autowired
-    PersonRepository personRepository;
-
-    @Autowired
-    private CoursesRepository coursesRepository;
+    public AdminController(PersonRepository personRepository, CoursesRepository coursesRepository, EazyClassRepository eazyClassRepository) {
+        this.personRepository = personRepository;
+        this.coursesRepository = coursesRepository;
+        this.eazyClassRepository = eazyClassRepository;
+    }
 
     @RequestMapping("/displayClasses")
     public ModelAndView displayClasses(Model model) {
@@ -51,15 +55,15 @@ public class AdminController {
         Optional<EazyClass> eazyClass = eazyClassRepository.findById(id);
         for (Person person : eazyClass.get().getPersons()) {
             person.setEazyClass((null));
-            personRepository.save((person));
+            personRepository.save(person);
         }
         eazyClassRepository.deleteById(id);
-        return new ModelAndView("redirect:/admin.displayClasses");
+        return new ModelAndView("redirect:/admin/displayClasses");
     }
 
     @GetMapping("/displayStudents")
     public ModelAndView displayStudents(Model model, @RequestParam int classId, HttpSession session,
-    @RequestParam(value = "error", required = false) String error) {
+                                        @RequestParam(value = "error", required = false) String error) {
         String errorMessage = null;
         ModelAndView modelAndView = new ModelAndView("students.html");
         Optional<EazyClass> eazyClass = eazyClassRepository.findById(classId);
@@ -94,7 +98,7 @@ public class AdminController {
         Optional<Person> person = personRepository.findById(personId);
         person.get().setEazyClass(null);
         eazyClass.getPersons().remove(person.get());
-        EazyClass eazyClassSaved =  eazyClassRepository.save(eazyClass);
+        EazyClass eazyClassSaved = eazyClassRepository.save(eazyClass);
         session.setAttribute("eazyClass", eazyClassSaved);
         return new ModelAndView("redirect:/admin/displayStudents?classId=" + eazyClass.getClassId());
     }
@@ -104,7 +108,7 @@ public class AdminController {
         List<Courses> courses = coursesRepository.findAll();
         ModelAndView modelAndView = new ModelAndView("courses_secure.html");
         modelAndView.addObject("courses", courses);
-        modelAndView.addObject("courses", new Courses());
+        modelAndView.addObject("course", new Courses());
         return modelAndView;
     }
 

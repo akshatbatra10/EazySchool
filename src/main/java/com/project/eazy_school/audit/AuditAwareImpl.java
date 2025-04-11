@@ -6,6 +6,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+/*
+implementation of Spring Data JPA Auditing, and it’s used to automatically set
+createdBy and updatedBy fields in your entities.
+ */
 @Component("auditAwareImpl")
 public class AuditAwareImpl implements AuditorAware<String> {
 

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
 @Slf4j
-@ControllerAdvice
+@ControllerAdvice // Marks the class as Global Exception handler for all @Controller classes
 public class GlobalExceptionController {
 
     @ExceptionHandler(Exception.class)

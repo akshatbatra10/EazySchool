@@ -16,29 +16,43 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class ProjectSecurityConfig {
 
+    /*
+        http.httpBasic(Customizer.withDefaults()):
+        http standard and is a stateless form of authentication
+        The credentials are sent to the server as a Base64-encoded string in the HTTP header
+        The server decodes it, verifies the credentials, and gives access if valid.
+     */
+
+    /*
+    http -> A fluent config builder for spring
+    HttpSecurity http = ... // define your security rules
+    SecurityFilterChain chain = http.build(); // apply those rules into a filter chain
+     */
+
+    // Provides Authorization and Authentication (security) at runtime
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.ignoringRequestMatchers("/saveMsg")
-                .ignoringRequestMatchers("/public/**"))
+                        .ignoringRequestMatchers("/public/**"))
                 .authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/dashboard").authenticated()
-                .requestMatchers("/displayProfile").authenticated()
-                .requestMatchers("/updateProfile").authenticated()
-                .requestMatchers("/displayMessages").hasRole("ADMIN")
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/student/**").hasRole("STUDENT")
-                .requestMatchers("/closeMsg/**").hasRole("ADMIN")
-                .requestMatchers("/", "/home").permitAll()
-                .requestMatchers("/contact").permitAll()
-                .requestMatchers("/saveMsg").permitAll()
-                .requestMatchers("/about").permitAll()
-                .requestMatchers("courses").permitAll()
-                .requestMatchers("/holidays/**").permitAll()
-                .requestMatchers("/assets/**").permitAll()
-                .requestMatchers("/login").permitAll()
-                .requestMatchers("/public/**").permitAll()
-                .requestMatchers("/logout").permitAll()
-                .anyRequest().authenticated());
+                        .requestMatchers("/dashboard").authenticated()
+                        .requestMatchers("/displayProfile").authenticated()
+                        .requestMatchers("/updateProfile").authenticated()
+                        .requestMatchers("/displayMessages").hasRole("ADMIN")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/student/**").hasRole("STUDENT")
+                        .requestMatchers("/closeMsg/**").hasRole("ADMIN")
+                        .requestMatchers("/", "/home").permitAll()
+                        .requestMatchers("/contact").permitAll()
+                        .requestMatchers("/saveMsg").permitAll()
+                        .requestMatchers("/about").permitAll()
+                        .requestMatchers("courses").permitAll()
+                        .requestMatchers("/holidays/**").permitAll()
+                        .requestMatchers("/assets/**").permitAll()
+                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/public/**").permitAll()
+                        .requestMatchers("/logout").permitAll()
+                        .anyRequest().authenticated());
         http.formLogin(form -> form
                 .loginPage("/login")
                 .defaultSuccessUrl("/dashboard", true)
@@ -49,7 +63,7 @@ public class ProjectSecurityConfig {
                 .invalidateHttpSession(true)
                 .permitAll());
         http.httpBasic(Customizer.withDefaults());
-        return (SecurityFilterChain) http.build();
+        return (SecurityFilterChain) http.build(); // Finalizes the setup and returns a usable security chain
     }
 
     @Bean
