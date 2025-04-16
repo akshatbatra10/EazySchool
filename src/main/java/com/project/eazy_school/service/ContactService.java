@@ -34,15 +34,11 @@ public class ContactService {
         int pageSize = 5;
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize, sortDir.equals("asc") ?
                 Sort.by(sortField).ascending() : Sort.by(sortField).descending());
-        return contactRepository.findByStatus(EazySchoolConstants.OPEN, pageable);
+        return contactRepository.findOpenMsgs(EazySchoolConstants.OPEN, pageable);
     }
 
     // Use Optional when data can be null
     public void updateMsgStatus(int contactId) {
-        Optional<Contact> contact = contactRepository.findById(contactId);
-        contact.ifPresent((contact1 -> {
-            contact1.setStatus(EazySchoolConstants.CLOSE);
-            contactRepository.save(contact.get());
-        }));
+        contactRepository.updateMsgStatusNative(EazySchoolConstants.CLOSE, contactId);
     }
 }
