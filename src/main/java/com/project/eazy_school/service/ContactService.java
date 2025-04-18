@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -34,11 +33,11 @@ public class ContactService {
         int pageSize = 5;
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize, sortDir.equals("asc") ?
                 Sort.by(sortField).ascending() : Sort.by(sortField).descending());
-        return contactRepository.findOpenMsgs(EazySchoolConstants.OPEN, pageable);
+        return contactRepository.findByStatus(EazySchoolConstants.OPEN, pageable);
     }
 
     // Use Optional when data can be null
     public void updateMsgStatus(int contactId) {
-        contactRepository.updateMsgStatusNative(EazySchoolConstants.CLOSE, contactId);
+        contactRepository.updateStatusById(EazySchoolConstants.CLOSE, contactId);
     }
 }
